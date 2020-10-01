@@ -1,0 +1,31 @@
+{
+  "name": "react-plate",
+  "version": "1.0.0",
+  "description": "React with hooks basic implementation",
+  "main": "app.js",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "rm -rf dist/*",
+    "build": "parcel build src/index.html",
+    "postbuild": "cp -R src/public/assets dist/ && workbox generateSW"
+  },
+  "keywords": [
+    "React",
+    "Boiler-Plate"
+  ],
+  "author": "Abishek Kumar",
+  "license": "ISC",
+  "dependencies": {
+    "babylonjs": "^4.1.0",
+    "babylonjs-gui": "^4.1.0",
+    "babylonjs-loaders": "^4.1.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.26.10",
+    "workbox-cli": "^5.1.3"
+  }
+}
