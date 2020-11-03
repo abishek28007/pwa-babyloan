@@ -1,7 +1,8 @@
-import * as BABYLON from 'babylonjs';
+import { Scene} from '@babylonjs/core/scene';
+import { Engine } from '@babylonjs/core/Engines/engine';
 import React, { useEffect } from 'react';
 
-const Scene = (props) => {
+const BaseScene = (props) => {
   let canvas, engine;
   const onResizeWindow = () => {
     if (engine) {
@@ -17,8 +18,8 @@ const Scene = (props) => {
   }
 
   useEffect(() => {
-    engine = new BABYLON.Engine(canvas, true, props.engineOptions, props.adaptToDeviceRatio);
-    let scene = new BABYLON.Scene(engine);
+    engine = new Engine(canvas, true, props.engineOptions, props.adaptToDeviceRatio);
+    let scene = new Scene(engine);
     if (typeof props.onSceneMount === 'function') {
       props.onSceneMount({ scene, engine, canvas });
     } else {
@@ -41,4 +42,4 @@ const Scene = (props) => {
   )
 }
 
-export default Scene
+export default BaseScene

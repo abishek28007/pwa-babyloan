@@ -7,7 +7,7 @@
     "start": "parcel src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prebuild": "rm -rf dist/*",
-    "build": "parcel build src/index.html",
+    "build": "NODE_ENV=production parcel build src/index.html --experimental-scope-hoisting",
     "postbuild": "cp -R src/public/assets dist/ && workbox generateSW"
   },
   "keywords": [
@@ -17,14 +17,15 @@
   "author": "Abishek Kumar",
   "license": "ISC",
   "dependencies": {
-    "babylonjs": "^4.1.0",
-    "babylonjs-gui": "^4.1.0",
-    "babylonjs-loaders": "^4.1.0",
+    "@babylonjs/core": "^4.1.0",
+    "@babylonjs/gui": "^4.1.0",
+    "@babylonjs/loaders": "^4.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.4",
+    "parcel-plugin-bundle-visualiser": "^1.2.0",
     "sass": "^1.26.10",
     "workbox-cli": "^5.1.3"
   }

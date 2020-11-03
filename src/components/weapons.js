@@ -1,12 +1,41 @@
 import React from 'react';
-import 'babylonjs-loaders';
-import * as GUI from 'babylonjs-gui';
-import * as BABYLON from 'babylonjs';
+import '@babylonjs/loaders/glTF';
+import {
+    Grid,
+    Button,
+    Control,
+    AdvancedDynamicTexture 
+} from '@babylonjs/gui/2D';
+
+import { 
+    Space,
+    Color3,
+    Color4,
+    Vector3
+} from '@babylonjs/core/Maths/math';
+import { Tools } from '@babylonjs/core/misc/tools';
+import { SceneLoader } from '@babylonjs/core/Loading';
+import { SineEase } from '@babylonjs/core/Animations/easing';
+import { GlowLayer } from '@babylonjs/core/Layers/glowLayer';
+import { NodeMaterial } from '@babylonjs/core/Materials/Node';
+import { Animation } from '@babylonjs/core/Animations/animation';
+import { AbstractMesh } from '@babylonjs/core/Meshes/abstractMesh';
+import { EasingFunction } from '@babylonjs/core/Animations/easing';
+import { Texture } from '@babylonjs/core/Materials/Textures/texture';
+import { PointerEventTypes } from '@babylonjs/core/Events/pointerEvents';
+import { ParticleSystem } from '@babylonjs/core/Particles/particleSystem';
+import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera';
+import { DirectionalLight } from '@babylonjs/core/Lights/directionalLight';
+import { KeyboardEventTypes } from '@babylonjs/core/Events/keyboardEvents';
+import { MeshParticleEmitter } from '@babylonjs/core/Particles/EmitterTypes/meshParticleEmitter';
+import { NoiseProceduralTexture } from '@babylonjs/core/Materials/Textures/Procedurals/noiseProceduralTexture';
+import { DefaultRenderingPipeline } from '@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline';
+
 import BabylonScene from './SceneComponent';
 
 // for each easing function, you can choose between EASEIN (default), EASEOUT, EASEINOUT
-var easingFunction = new BABYLON.SineEase();
-easingFunction.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
+var easingFunction = new SineEase();
+easingFunction.setEasingMode(EasingFunction.EASINGMODE_EASEINOUT);
 
 /**
  * 
@@ -26,9 +55,9 @@ function playAnimation(scene, parameter, animValue, animKeys, animLooping, useEa
 
     // create animation clips
     var linkParamAnim = null;
-    var paramAnim = new BABYLON.Animation("paramAnim", animValue, 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var paramAnim = new Animation("paramAnim", animValue, 60, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CYCLE);
     if (linkAnimation) {
-        linkParamAnim = new BABYLON.Animation("linkParamAnim", linkAnimValue, 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+        linkParamAnim = new Animation("linkParamAnim", linkAnimValue, 60, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CYCLE);
     }
 
     // set up easing
@@ -61,12 +90,12 @@ const Weapons = (props) => {
         var promises = [];
 
         // create and position arc-rotate camera
-        var camera = new BABYLON.ArcRotateCamera("ArcRotateCamera", BABYLON.Tools.ToRadians(-270), Math.PI / 2, 90, new BABYLON.Vector3(0, 0, 0), scene);
+        var camera = new ArcRotateCamera("ArcRotateCamera", Tools.ToRadians(-270), Math.PI / 2, 90, new Vector3(0, 0, 0), scene);
 
         // camera controls
         var cameraControl = false;
         scene.onKeyboardObservable.add(evt => {
-            if (evt.type !== BABYLON.KeyboardEventTypes.KEYDOWN) {
+            if (evt.type !== KeyboardEventTypes.KEYDOWN) {
                 return;
             }
             if (evt.event.keyCode === 67) { // c key to switch between camera rotation and object rotation
@@ -81,11 +110,11 @@ const Weapons = (props) => {
         });
 
         // clear color
-        scene.clearColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+        scene.clearColor = new Color3(0.1, 0.1, 0.1);
 
         // create light
-        var dirLight1 = new BABYLON.DirectionalLight("dirLight1", new BABYLON.Vector3(0, 0, 0), scene);
-        dirLight1.direction = new BABYLON.Vector3(-0.5, 0.38, 0.67);
+        var dirLight1 = new DirectionalLight("dirLight1", new Vector3(0, 0, 0), scene);
+        dirLight1.direction = new Vector3(-0.5, 0.38, 0.67);
         dirLight1.position = camera.position;
         dirLight1.parent = camera;
 
@@ -94,22 +123,22 @@ const Weapons = (props) => {
         var axeMagicActive = false;
 
         // create node materials
-        var daggerHandleMat = new BABYLON.NodeMaterial("daggerHandleMat", scene, { emitComments: false });
-        var daggerGemMat = new BABYLON.NodeMaterial("daggerGemMat", scene, { emitComments: false });
-        var daggerBladeMat = new BABYLON.NodeMaterial("daggerBladeMat", scene, { emitComments: false });
+        var daggerHandleMat = new NodeMaterial("daggerHandleMat", scene, { emitComments: false });
+        var daggerGemMat = new NodeMaterial("daggerGemMat", scene, { emitComments: false });
+        var daggerBladeMat = new NodeMaterial("daggerBladeMat", scene, { emitComments: false });
 
-        var swordHiltMat = new BABYLON.NodeMaterial("swordHiltMat", scene, { emitComments: false });
-        var swordHandleGemMat = new BABYLON.NodeMaterial("swordHandleGemMat", scene, { emitComments: false });
-        var swordGuardGemsMat = new BABYLON.NodeMaterial("swordGuardGemsMat", scene, { emitComments: false });
-        var swordBladeMat = new BABYLON.NodeMaterial("swordBladeMat", scene, { emitComments: false });
+        var swordHiltMat = new NodeMaterial("swordHiltMat", scene, { emitComments: false });
+        var swordHandleGemMat = new NodeMaterial("swordHandleGemMat", scene, { emitComments: false });
+        var swordGuardGemsMat = new NodeMaterial("swordGuardGemsMat", scene, { emitComments: false });
+        var swordBladeMat = new NodeMaterial("swordBladeMat", scene, { emitComments: false });
 
-        var axeMat = new BABYLON.NodeMaterial("axeMat", scene, { emitComments: false });
-        var axeIceMat = new BABYLON.NodeMaterial("axeIceMat", scene, { emitComments: false });
+        var axeMat = new NodeMaterial("axeMat", scene, { emitComments: false });
+        var axeIceMat = new NodeMaterial("axeIceMat", scene, { emitComments: false });
 
         // load assets 
-        promises.push(BABYLON.SceneLoader.AppendAsync("https://models.babylonjs.com/Demos/weaponsDemo/meshes/moltenDagger.glb"));
-        promises.push(BABYLON.SceneLoader.AppendAsync("https://models.babylonjs.com/Demos/weaponsDemo/meshes/runeSword.glb"));
-        promises.push(BABYLON.SceneLoader.AppendAsync("https://models.babylonjs.com/Demos/weaponsDemo/meshes/frostAxe.glb"));
+        promises.push(SceneLoader.AppendAsync("https://models.babylonjs.com/Demos/weaponsDemo/meshes/moltenDagger.glb"));
+        promises.push(SceneLoader.AppendAsync("https://models.babylonjs.com/Demos/weaponsDemo/meshes/runeSword.glb"));
+        promises.push(SceneLoader.AppendAsync("https://models.babylonjs.com/Demos/weaponsDemo/meshes/frostAxe.glb"));
         promises.push(daggerHandleMat.loadAsync("https://models.babylonjs.com/Demos/weaponsDemo/shaders/daggerHandleMat.json"));
         promises.push(daggerBladeMat.loadAsync("https://models.babylonjs.com/Demos/weaponsDemo/shaders/daggerBladeMat.json"));
         promises.push(daggerGemMat.loadAsync("https://models.babylonjs.com/Demos/weaponsDemo/shaders/daggerGemMat.json"));
@@ -124,8 +153,8 @@ const Weapons = (props) => {
         Promise.all(promises).then(function () {
 
             // scene position meshes
-            var weaponsParent = new BABYLON.AbstractMesh("weaponsParent", scene);
-            weaponsParent.position = new BABYLON.Vector3(0, 0, 0);
+            var weaponsParent = new AbstractMesh("weaponsParent", scene);
+            weaponsParent.position = new Vector3(0, 0, 0);
             var activeWeapon = "dagger";
 
             // dagger mesh
@@ -141,16 +170,16 @@ const Weapons = (props) => {
             const swordGuardGems = scene.getMeshByName("swordGuardGems_low");
             const swordHandleGem = scene.getMeshByName("swordHandleGem_low");
             const swordParent = swordHilt.parent;
-            swordParent.position = new BABYLON.Vector3(400, 0, 0);
-            swordParent.scaling = new BABYLON.Vector3(100, 100, 100);
+            swordParent.position = new Vector3(400, 0, 0);
+            swordParent.scaling = new Vector3(100, 100, 100);
             swordParent.parent = weaponsParent;
 
             // axe mesh
             const axe = scene.getMeshByName("frostAxe_low");
             const axeIce = scene.getMeshByName("frostAxeIce_low");
             const axeParent = axe.parent;
-            axeParent.position = new BABYLON.Vector3(800, 0, 0);
-            axeParent.scaling = new BABYLON.Vector3(100, 100, 100);
+            axeParent.position = new Vector3(800, 0, 0);
+            axeParent.scaling = new Vector3(100, 100, 100);
             axeParent.parent = weaponsParent;
             var freezeMorph = axeIce.morphTargetManager.getTarget(0);
             var iceBladeMorph = axeIce.morphTargetManager.getTarget(1);
@@ -189,22 +218,22 @@ const Weapons = (props) => {
             axeIce.material = axeIceMat;
 
             // textures
-            const daggerDiffuseTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_diffuse.png", scene, false, false);
-            const daggerSpecularTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_specular.png", scene, false, false);
-            const daggerGlossTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_gloss.png", scene, false, false);
-            const daggerEmissiveTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_emissive.png", scene, false, false);
-            const daggerMaskTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_mask.png", scene, false, false);
-            const swordDiffuseTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/runeSword_diffuse.png", scene, false, false);
-            const swordSpecularTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/runeSword_specular.png", scene, false, false);
-            const swordGlossTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/runeSword_gloss.png", scene, false, false);
-            const swordEmissiveTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/runeSword_emissive.png", scene, false, false);
-            const swordHandleGemNormalTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/swordHandleGem_normal.png", scene, false, false);
-            const swordHandleGemPositionTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/swordHandleGem_position.png", scene, false, false);
-            const axeDiffuseTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_diffuse.png", scene, false, false);
-            const axeSpecularTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_specular.png", scene, false, false);
-            const axeGlossTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_gloss.png", scene, false, false);
-            const axeMaskTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_masks.png", scene, false, false);
-            const axeEmissiveTex = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_emissive.png", scene, false, false);
+            const daggerDiffuseTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_diffuse.png", scene, false, false);
+            const daggerSpecularTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_specular.png", scene, false, false);
+            const daggerGlossTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_gloss.png", scene, false, false);
+            const daggerEmissiveTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_emissive.png", scene, false, false);
+            const daggerMaskTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_mask.png", scene, false, false);
+            const swordDiffuseTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/runeSword_diffuse.png", scene, false, false);
+            const swordSpecularTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/runeSword_specular.png", scene, false, false);
+            const swordGlossTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/runeSword_gloss.png", scene, false, false);
+            const swordEmissiveTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/runeSword_emissive.png", scene, false, false);
+            const swordHandleGemNormalTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/swordHandleGem_normal.png", scene, false, false);
+            const swordHandleGemPositionTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/swordHandleGem_position.png", scene, false, false);
+            const axeDiffuseTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_diffuse.png", scene, false, false);
+            const axeSpecularTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_specular.png", scene, false, false);
+            const axeGlossTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_gloss.png", scene, false, false);
+            const axeMaskTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_masks.png", scene, false, false);
+            const axeEmissiveTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_emissive.png", scene, false, false);
 
             // get shader parameters
             var daggerBladeDiffuse = daggerBladeMat.getBlockByName("diffuseTexture");
@@ -492,21 +521,21 @@ const Weapons = (props) => {
             };
 
             // particle noise
-            var noiseTexture = new BABYLON.NoiseProceduralTexture("perlin", 256, scene);
+            var noiseTexture = new NoiseProceduralTexture("perlin", 256, scene);
             noiseTexture.animationSpeedFactor = 5;
             noiseTexture.persistence = 2;
             noiseTexture.brightness = 0.5;
             noiseTexture.octaves = 6;
 
             // dagger blade mesh emitter
-            var daggerMeshEmitter = new BABYLON.MeshParticleEmitter(daggerBlade);
+            var daggerMeshEmitter = new MeshParticleEmitter(daggerBlade);
             daggerMeshEmitter.useMeshNormalsForDirection = false;
-            daggerMeshEmitter.direction1 = new BABYLON.Vector3(1, 0, 0);
-            daggerMeshEmitter.direction2 = new BABYLON.Vector3(1, 0.2, 0);
+            daggerMeshEmitter.direction1 = new Vector3(1, 0, 0);
+            daggerMeshEmitter.direction2 = new Vector3(1, 0.2, 0);
 
             // dagger embers particle system
-            var daggerEmbers = new BABYLON.ParticleSystem("daggerEmbers", 1000, scene);
-            daggerEmbers.particleTexture = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/sparks.png", scene);
+            var daggerEmbers = new ParticleSystem("daggerEmbers", 1000, scene);
+            daggerEmbers.particleTexture = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/sparks.png", scene);
             daggerEmbers.minSize = 0.2;
             daggerEmbers.maxSize = 0.6;
             daggerEmbers.particleEmitterType = daggerMeshEmitter;
@@ -514,34 +543,34 @@ const Weapons = (props) => {
             daggerEmbers.minLifeTime = 4.0;
             daggerEmbers.maxLifeTime = 4.0;
             daggerEmbers.emitRate = 30;
-            daggerEmbers.addColorGradient(0.0, new BABYLON.Color4(0.9245, 0.6540, 0.0915, 0));
-            daggerEmbers.addColorGradient(0.04, new BABYLON.Color4(0.9062, 0.6132, 0.0942, 0.1));
-            daggerEmbers.addColorGradient(0.4, new BABYLON.Color4(0.7968, 0.3685, 0.1105, 1));
-            daggerEmbers.addColorGradient(0.7, new BABYLON.Color4(0.6886, 0.1266, 0.1266, 1));
-            daggerEmbers.addColorGradient(0.9, new BABYLON.Color4(0.3113, 0.0367, 0.0367, 0.6));
-            daggerEmbers.addColorGradient(1.0, new BABYLON.Color4(0.3113, 0.0367, 0.0367, 0));
-            daggerEmbers.blendMode = BABYLON.ParticleSystem.BLENDMODE_ADD;
-            daggerEmbers.gravity = new BABYLON.Vector3(0, 5, 0);
+            daggerEmbers.addColorGradient(0.0, new Color4(0.9245, 0.6540, 0.0915, 0));
+            daggerEmbers.addColorGradient(0.04, new Color4(0.9062, 0.6132, 0.0942, 0.1));
+            daggerEmbers.addColorGradient(0.4, new Color4(0.7968, 0.3685, 0.1105, 1));
+            daggerEmbers.addColorGradient(0.7, new Color4(0.6886, 0.1266, 0.1266, 1));
+            daggerEmbers.addColorGradient(0.9, new Color4(0.3113, 0.0367, 0.0367, 0.6));
+            daggerEmbers.addColorGradient(1.0, new Color4(0.3113, 0.0367, 0.0367, 0));
+            daggerEmbers.blendMode = ParticleSystem.BLENDMODE_ADD;
+            daggerEmbers.gravity = new Vector3(0, 5, 0);
             daggerEmbers.noiseTexture = noiseTexture;
-            daggerEmbers.noiseStrength = new BABYLON.Vector3(6, 6, 4);
+            daggerEmbers.noiseStrength = new Vector3(6, 6, 4);
             daggerEmbers.minEmitPower = 4;
             daggerEmbers.maxEmitPower = 6;
             daggerEmbers.updateSpeed = 1 / 60;
 
             // sword blade mesh emitter
-            var swordMeshEmitter = new BABYLON.MeshParticleEmitter(swordBlade);
+            var swordMeshEmitter = new MeshParticleEmitter(swordBlade);
             swordMeshEmitter.useMeshNormalsForDirection = true;
 
             // sword glow system
-            var swordGlow = new BABYLON.ParticleSystem("swordGlow", 1500, scene);
-            swordGlow.particleTexture = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/glowParticleAlpha.png", scene);
+            var swordGlow = new ParticleSystem("swordGlow", 1500, scene);
+            swordGlow.particleTexture = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/glowParticleAlpha.png", scene);
             swordGlow.minInitialRotation = -2 * Math.PI;
             swordGlow.maxInitialRotation = 2 * Math.PI;
             swordGlow.particleEmitterType = swordMeshEmitter;
             swordGlow.emitter = swordBlade;
-            swordGlow.addColorGradient(0, new BABYLON.Color4(0.12, 0.21, 0.041, 0.0));
-            swordGlow.addColorGradient(0.5, new BABYLON.Color4(0.243, 0.424, 0.082, 0.3));
-            swordGlow.addColorGradient(1.0, new BABYLON.Color4(0.12, 0.21, 0.041, 0.0));
+            swordGlow.addColorGradient(0, new Color4(0.12, 0.21, 0.041, 0.0));
+            swordGlow.addColorGradient(0.5, new Color4(0.243, 0.424, 0.082, 0.3));
+            swordGlow.addColorGradient(1.0, new Color4(0.12, 0.21, 0.041, 0.0));
             swordGlow.minScaleX = 14;
             swordGlow.minScaleY = 16;
             swordGlow.maxScaleX = 20;
@@ -549,8 +578,8 @@ const Weapons = (props) => {
             swordGlow.minLifeTime = 1.0;
             swordGlow.maxLifeTime = 1.0;
             swordGlow.emitRate = 600;
-            swordGlow.blendMode = BABYLON.ParticleSystem.BLENDMODE_STANDARD;
-            swordGlow.gravity = new BABYLON.Vector3(0, 0, 0);
+            swordGlow.blendMode = ParticleSystem.BLENDMODE_STANDARD;
+            swordGlow.gravity = new Vector3(0, 0, 0);
             swordGlow.minAngularSpeed = -3.0;
             swordGlow.maxAngularSpeed = 3.0;
             swordGlow.minEmitPower = 0.0;
@@ -559,54 +588,54 @@ const Weapons = (props) => {
             swordGlow.isLocal = true;
 
             // axe blade mesh emitter
-            var axeMeshEmitter = new BABYLON.MeshParticleEmitter(axeIce);
+            var axeMeshEmitter = new MeshParticleEmitter(axeIce);
             axeMeshEmitter.useMeshNormalsForDirection = true;
 
             // axe snow system
-            var axeSnow = new BABYLON.ParticleSystem("axeSnow", 600, scene);
-            axeSnow.particleTexture = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/snowParticle.png", scene);
+            var axeSnow = new ParticleSystem("axeSnow", 600, scene);
+            axeSnow.particleTexture = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/snowParticle.png", scene);
             axeSnow.particleEmitterType = axeMeshEmitter;
             axeSnow.emitter = axeIce;
-            axeSnow.addColorGradient(0, new BABYLON.Color4(0.8, 0.8, 0.9, 0.0));
-            axeSnow.addColorGradient(0.1, new BABYLON.Color4(0.8, 0.8, 0.9, 0.6));
-            axeSnow.addColorGradient(0.5, new BABYLON.Color4(0.8, 0.8, 0.9, 0.6));
-            axeSnow.addColorGradient(1.0, new BABYLON.Color4(0.8, 0.8, 0.9, 0.0));
+            axeSnow.addColorGradient(0, new Color4(0.8, 0.8, 0.9, 0.0));
+            axeSnow.addColorGradient(0.1, new Color4(0.8, 0.8, 0.9, 0.6));
+            axeSnow.addColorGradient(0.5, new Color4(0.8, 0.8, 0.9, 0.6));
+            axeSnow.addColorGradient(1.0, new Color4(0.8, 0.8, 0.9, 0.0));
             axeSnow.minSize = 0.3;
             axeSnow.maxSize = 0.6;
             axeSnow.minLifeTime = 1.5;
             axeSnow.maxLifeTime = 2.0;
             axeSnow.emitRate = 100;
-            axeSnow.blendMode = BABYLON.ParticleSystem.BLENDMODE_STANDARD;
+            axeSnow.blendMode = ParticleSystem.BLENDMODE_STANDARD;
             axeSnow.noiseTexture = noiseTexture;
-            axeSnow.noiseStrength = new BABYLON.Vector3(10, 2, 10);
-            axeSnow.gravity = new BABYLON.Vector3(0, -9.8, 0);
+            axeSnow.noiseStrength = new Vector3(10, 2, 10);
+            axeSnow.gravity = new Vector3(0, -9.8, 0);
             axeSnow.minEmitPower = 0;
             axeSnow.maxEmitPower = 0;
 
             // axe vapor system
-            var axeVapor = new BABYLON.ParticleSystem("axeSnow", 300, scene);
+            var axeVapor = new ParticleSystem("axeSnow", 300, scene);
             axeVapor.particleEmitterType = axeMeshEmitter;
             axeVapor.emitter = axeIce;
             axeVapor.minInitialRotation = -2 * Math.PI;
             axeVapor.maxInitialRotation = 2 * Math.PI;
             axeVapor.minAngularSpeed = -0.5;
             axeVapor.maxAngularSpeed = 0.5;
-            axeVapor.addColorGradient(0, new BABYLON.Color4(0.8, 0.8, 0.9, 0.0));
-            axeVapor.addColorGradient(0.35, new BABYLON.Color4(0.8, 0.8, 0.9, 0.1));
-            axeVapor.addColorGradient(1.0, new BABYLON.Color4(0.8, 0.8, 0.9, 0.0));
+            axeVapor.addColorGradient(0, new Color4(0.8, 0.8, 0.9, 0.0));
+            axeVapor.addColorGradient(0.35, new Color4(0.8, 0.8, 0.9, 0.1));
+            axeVapor.addColorGradient(1.0, new Color4(0.8, 0.8, 0.9, 0.0));
             axeVapor.minSize = 8;
             axeVapor.maxSize = 12;
             axeVapor.minLifeTime = 2.0;
             axeVapor.maxLifeTime = 3.5;
             axeVapor.emitRate = 25;
-            axeVapor.blendMode = BABYLON.ParticleSystem.BLENDMODE_ADD;
-            axeVapor.gravity = new BABYLON.Vector3(0, -2, 0);
+            axeVapor.blendMode = ParticleSystem.BLENDMODE_ADD;
+            axeVapor.gravity = new Vector3(0, -2, 0);
             axeVapor.minEmitPower = 0;
             axeVapor.maxEmitPower = 0;
 
             // particle sprite sheet
             axeVapor.isAnimationSheetEnabled = true;
-            axeVapor.particleTexture = new BABYLON.Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/vaporParticles.png", scene, false, false);
+            axeVapor.particleTexture = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/vaporParticles.png", scene, false, false);
             axeVapor.spriteCellWidth = 256;
             axeVapor.spriteCellHeight = 256;
             axeVapor.startSpriteCellID = 0;
@@ -632,12 +661,12 @@ const Weapons = (props) => {
             axeVapor.renderingGroupId = 1;
 
             // new render pipeline
-            var pipeline = new BABYLON.DefaultRenderingPipeline("renderPass", true, scene, scene.camera);
+            var pipeline = new DefaultRenderingPipeline("renderPass", true, scene, scene.camera);
             pipeline.imageProcessingEnabled = false;
 
             // glow layer
             pipeline.glowLayerEnabled = true;
-            var gl = new BABYLON.GlowLayer("glow", scene, {
+            var gl = new GlowLayer("glow", scene, {
                 mainTextureFixedSize: 1024,
                 blurKernelSize: 64
             });
@@ -701,7 +730,7 @@ const Weapons = (props) => {
             }
 
             function toDagger(bypass) {
-                daggerParent.rotation = new BABYLON.Vector3(0, Math.PI, 0);
+                daggerParent.rotation = new Vector3(0, Math.PI, 0);
                 var motionKeys = [];
                 if (bypass) {
                     var midFrame = Math.floor(sceneAnimParameters.toAxe[sceneAnimParameters.toAxe.length - 1].frame * 0.5);
@@ -726,7 +755,7 @@ const Weapons = (props) => {
             }
 
             function toSword() {
-                swordParent.rotation = new BABYLON.Vector3(0, 0, 0);
+                swordParent.rotation = new Vector3(0, 0, 0);
                 sceneAnimParameters.toSword[0].value = weaponsParent.position.x;
                 sceneAnimParameters.zoomSword[0].value = camera.radius;
                 playAnimation(scene,sceneAnimParameters.animationTarget, "position.x", sceneAnimParameters.toSword, false, true, false);
@@ -736,7 +765,7 @@ const Weapons = (props) => {
             }
 
             function toAxe(bypass) {
-                axeParent.rotation = new BABYLON.Vector3(0, Math.PI, 0);
+                axeParent.rotation = new Vector3(0, Math.PI, 0);
                 var motionKeys = [];
                 if (bypass) {
                     var midFrame = Math.floor(sceneAnimParameters.toDagger[sceneAnimParameters.toDagger.length - 1].frame * 0.5);
@@ -955,21 +984,21 @@ const Weapons = (props) => {
                     return;
                 }
 
-                if (evt.type === BABYLON.PointerEventTypes.POINTERDOWN) {
+                if (evt.type === PointerEventTypes.POINTERDOWN) {
                     mouseDown = true;
-                    if (BABYLON.Vector3.Dot(focusedMesh.up, camera.getWorldMatrix().getRotationMatrix().getRow(1)) >= 0) {
+                    if (Vector3.Dot(focusedMesh.up, camera.getWorldMatrix().getRotationMatrix().getRow(1)) >= 0) {
                         xRotationSign = -1;
                     } else {
                         xRotationSign = 1;
                     }
                     return;
                 }
-                if (evt.type === BABYLON.PointerEventTypes.POINTERUP) {
+                if (evt.type === PointerEventTypes.POINTERUP) {
                     mouseDown = false;
                     return;
                 }
 
-                if (!mouseDown || evt.type !== BABYLON.PointerEventTypes.POINTERMOVE) {
+                if (!mouseDown || evt.type !== PointerEventTypes.POINTERMOVE) {
                     return;
                 }
 
@@ -1003,16 +1032,16 @@ const Weapons = (props) => {
                 if (cameraControl) {
                     return;
                 }
-                focusedMesh.rotate(BABYLON.Vector3.UpReadOnly, inertialAlpha, BABYLON.Space.LOCAL);
-                focusedMesh.rotate(BABYLON.Vector3.Left(), inertialBeta, BABYLON.Space.WORLD);
+                focusedMesh.rotate(Vector3.UpReadOnly, inertialAlpha, Space.LOCAL);
+                focusedMesh.rotate(Vector3.Left(), inertialBeta, Space.WORLD);
 
                 inertialAlpha *= inertia;
                 inertialBeta *= inertia;
             });
 
             // GUI
-            var guiLayer = GUI.AdvancedDynamicTexture.CreateFullscreenUI("guiLayer");
-            var guiContainer = new GUI.Grid();
+            var guiLayer = AdvancedDynamicTexture.CreateFullscreenUI("guiLayer");
+            var guiContainer = new Grid();
             guiContainer.name = "uiGrid";
             guiContainer.addRowDefinition(1, false);
             guiContainer.addColumnDefinition(1 / 3, false);
@@ -1025,33 +1054,33 @@ const Weapons = (props) => {
             guiLayer.addControl(guiContainer);
 
             // Buttons
-            const activateBtn = GUI.Button.CreateImageOnlyButton("activate", "https://models.babylonjs.com/Demos/weaponsDemo/textures/activateButton.png");
+            const activateBtn = Button.CreateImageOnlyButton("activate", "https://models.babylonjs.com/Demos/weaponsDemo/textures/activateButton.png");
             activateBtn.width = "130px";
             activateBtn.height = "55px";
             activateBtn.thickness = 0;
-            activateBtn.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+            activateBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
             activateBtn.onPointerClickObservable.add(() => {
                 if (acceptInput) {
                     updateWeaponState(true);
                 }
             });
 
-            const leftBtn = GUI.Button.CreateImageOnlyButton("left", "https://models.babylonjs.com/Demos/weaponsDemo/textures/leftButton.png");
+            const leftBtn = Button.CreateImageOnlyButton("left", "https://models.babylonjs.com/Demos/weaponsDemo/textures/leftButton.png");
             leftBtn.width = "55px";
             leftBtn.height = "55px";
             leftBtn.thickness = 0;
-            leftBtn.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+            leftBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
             leftBtn.onPointerClickObservable.add(() => {
                 if (acceptInput) {
                     updateWeaponsPosition("left");
                 }
             });
 
-            const rightBtn = GUI.Button.CreateImageOnlyButton("right", "https://models.babylonjs.com/Demos/weaponsDemo/textures/rightButton.png");
+            const rightBtn = Button.CreateImageOnlyButton("right", "https://models.babylonjs.com/Demos/weaponsDemo/textures/rightButton.png");
             rightBtn.width = "55px";
             rightBtn.height = "55px";
             rightBtn.thickness = 0;
-            rightBtn.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+            rightBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
             rightBtn.onPointerClickObservable.add(() => {
                 if (acceptInput) {
                     updateWeaponsPosition("right");
@@ -1063,7 +1092,7 @@ const Weapons = (props) => {
             guiContainer.addControl(activateBtn, 0, 1);
             guiContainer.addControl(rightBtn, 0, 2);
         });
-        scene.debugLayer.show();
+        // scene.debugLayer.show();
     }
   
     const run = (e) => {
