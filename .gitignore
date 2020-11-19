@@ -1,6 +1,7 @@
 # Compiled binary
 dist/
 .cache/
+.parcel-cache/
 
 # Dependency directories
 node_modules/

@@ -218,22 +218,22 @@ const Weapons = (props) => {
             axeIce.material = axeIceMat;
 
             // textures
-            const daggerDiffuseTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_diffuse.png", scene, false, false);
-            const daggerSpecularTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_specular.png", scene, false, false);
-            const daggerGlossTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_gloss.png", scene, false, false);
-            const daggerEmissiveTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_emissive.png", scene, false, false);
-            const daggerMaskTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/moltenDagger_mask.png", scene, false, false);
-            const swordDiffuseTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/runeSword_diffuse.png", scene, false, false);
-            const swordSpecularTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/runeSword_specular.png", scene, false, false);
-            const swordGlossTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/runeSword_gloss.png", scene, false, false);
-            const swordEmissiveTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/runeSword_emissive.png", scene, false, false);
-            const swordHandleGemNormalTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/swordHandleGem_normal.png", scene, false, false);
-            const swordHandleGemPositionTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/swordHandleGem_position.png", scene, false, false);
-            const axeDiffuseTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_diffuse.png", scene, false, false);
-            const axeSpecularTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_specular.png", scene, false, false);
-            const axeGlossTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_gloss.png", scene, false, false);
-            const axeMaskTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_masks.png", scene, false, false);
-            const axeEmissiveTex = new Texture("https://models.babylonjs.com/Demos/weaponsDemo/textures/frostAxe_emissive.png", scene, false, false);
+            const daggerDiffuseTex = new Texture("/public/assets/textures/moltenDagger_diffuse.png", scene, false, false);
+            const daggerSpecularTex = new Texture("/public/assets/textures/moltenDagger_specular.png", scene, false, false);
+            const daggerGlossTex = new Texture("/public/assets/textures/moltenDagger_gloss.png", scene, false, false);
+            const daggerEmissiveTex = new Texture("/public/assets/textures/moltenDagger_emissive.png", scene, false, false);
+            const daggerMaskTex = new Texture("/public/assets/textures/moltenDagger_mask.png", scene, false, false);
+            const swordDiffuseTex = new Texture("/public/assets/textures/runeSword_diffuse.png", scene, false, false);
+            const swordSpecularTex = new Texture("/public/assets/textures/runeSword_specular.png", scene, false, false);
+            const swordGlossTex = new Texture("/public/assets/textures/runeSword_gloss.png", scene, false, false);
+            const swordEmissiveTex = new Texture("/public/assets/textures/runeSword_emissive.png", scene, false, false);
+            const swordHandleGemNormalTex = new Texture("/public/assets/textures/swordHandleGem_normal.png", scene, false, false);
+            const swordHandleGemPositionTex = new Texture("/public/assets/textures/swordHandleGem_position.png", scene, false, false);
+            const axeDiffuseTex = new Texture("/public/assets/textures/frostAxe_diffuse.png", scene, false, false);
+            const axeSpecularTex = new Texture("/public/assets/textures/frostAxe_specular.png", scene, false, false);
+            const axeGlossTex = new Texture("/public/assets/textures/frostAxe_gloss.png", scene, false, false);
+            const axeMaskTex = new Texture("/public/assets/textures/frostAxe_masks.png", scene, false, false);
+            const axeEmissiveTex = new Texture("/public/assets/textures/frostAxe_emissive.png", scene, false, false);
 
             // get shader parameters
             var daggerBladeDiffuse = daggerBladeMat.getBlockByName("diffuseTexture");
