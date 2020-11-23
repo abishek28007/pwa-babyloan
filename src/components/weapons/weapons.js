@@ -1,11 +1,7 @@
 import React from 'react';
 import '@babylonjs/loaders/glTF';
-import {
-    Grid,
-    Button,
-    Control,
-    AdvancedDynamicTexture 
-} from '@babylonjs/gui/2D';
+import '@babylonjs/inspector';
+import "@babylonjs/core/Debug/debugLayer"; 
 
 import { 
     Space,
@@ -31,7 +27,8 @@ import { MeshParticleEmitter } from '@babylonjs/core/Particles/EmitterTypes/mesh
 import { NoiseProceduralTexture } from '@babylonjs/core/Materials/Textures/Procedurals/noiseProceduralTexture';
 import { DefaultRenderingPipeline } from '@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline';
 
-import BabylonScene from './SceneComponent';
+import BabylonScene from '../SceneComponent';
+import controls from './Controls';
 
 // for each easing function, you can choose between EASEIN (default), EASEOUT, EASEINOUT
 var easingFunction = new SineEase();
@@ -1040,59 +1037,9 @@ const Weapons = (props) => {
             });
 
             // GUI
-            var guiLayer = AdvancedDynamicTexture.CreateFullscreenUI("guiLayer");
-            var guiContainer = new Grid();
-            guiContainer.name = "uiGrid";
-            guiContainer.addRowDefinition(1, false);
-            guiContainer.addColumnDefinition(1 / 3, false);
-            guiContainer.addColumnDefinition(1 / 3, false);
-            guiContainer.addColumnDefinition(1 / 3, false);
-            guiContainer.paddingTop = "50px";
-            guiContainer.paddingLeft = "50px";
-            guiContainer.paddingRight = "50px";
-            guiContainer.paddingBottom = "50px";
-            guiLayer.addControl(guiContainer);
-
-            // Buttons
-            const activateBtn = Button.CreateImageOnlyButton("activate", "https://models.babylonjs.com/Demos/weaponsDemo/textures/activateButton.png");
-            activateBtn.width = "130px";
-            activateBtn.height = "55px";
-            activateBtn.thickness = 0;
-            activateBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
-            activateBtn.onPointerClickObservable.add(() => {
-                if (acceptInput) {
-                    updateWeaponState(true);
-                }
-            });
-
-            const leftBtn = Button.CreateImageOnlyButton("left", "https://models.babylonjs.com/Demos/weaponsDemo/textures/leftButton.png");
-            leftBtn.width = "55px";
-            leftBtn.height = "55px";
-            leftBtn.thickness = 0;
-            leftBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
-            leftBtn.onPointerClickObservable.add(() => {
-                if (acceptInput) {
-                    updateWeaponsPosition("left");
-                }
-            });
-
-            const rightBtn = Button.CreateImageOnlyButton("right", "https://models.babylonjs.com/Demos/weaponsDemo/textures/rightButton.png");
-            rightBtn.width = "55px";
-            rightBtn.height = "55px";
-            rightBtn.thickness = 0;
-            rightBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
-            rightBtn.onPointerClickObservable.add(() => {
-                if (acceptInput) {
-                    updateWeaponsPosition("right");
-                }
-            });
-
-            // add button to GUI
-            guiContainer.addControl(leftBtn, 0, 0);
-            guiContainer.addControl(activateBtn, 0, 1);
-            guiContainer.addControl(rightBtn, 0, 2);
+            controls({ acceptInput, scene, cameraControl, focusedMesh, updateWeaponState, updateWeaponsPosition })
         });
-        // scene.debugLayer.show();
+        scene.debugLayer.show();
     }
   
     const run = (e) => {
@@ -1106,7 +1053,7 @@ const Weapons = (props) => {
 
 	const onSceneMount = (e) => {
 		setup(e);
-		run(e);
+        run(e);
     };
 
     return (

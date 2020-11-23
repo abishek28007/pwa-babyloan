@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 // import Secondary from './secondary';
 // import Tertiary from './tertiary';
 // import ModelCarMoving from './ModelCarMoving';
-import Weapons from './weapons';
+import Weapons from './weapons/weapons';
 // import WebPageLoader from './WebPageLoader';
 
 const Main = (props) => {

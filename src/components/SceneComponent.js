@@ -32,13 +32,10 @@ const BaseScene = (props) => {
     }
   }, []);
   return (
-    // <>
     <canvas
       // id="renderCanvas"
       ref={onCanvasLoaded}
     />
-    // <button>W</button>
-    // </>
   )
 }
 
