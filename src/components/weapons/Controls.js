@@ -4,10 +4,6 @@ import {
     Control,
     AdvancedDynamicTexture 
 } from '@babylonjs/gui/2D';
-import { 
-    Space,
-    Vector3
-} from '@babylonjs/core/Maths/math';
 
 const buttons = [{
     name: "left",
@@ -43,33 +39,7 @@ const buttons = [{
 }];
 
 
-const controls = ({ acceptInput, scene, cameraControl, focusedMesh, updateWeaponState, updateWeaponsPosition }) => {
-    var inertialAlpha = 0;
-    var inertialBeta = 0;
-    var inertia = 0.95;
-
-    // add listener for key press
-    document.addEventListener('keydown', updateWeaponState);
-    document.addEventListener('keydown', updateWeaponsPosition);
-
-    // remove listeners when scene disposed
-    scene.onDisposeObservable.add(function () {
-        document.removeEventListener('keydown', updateWeaponState);
-        document.removeEventListener('keydown', updateWeaponsPosition);
-    });
-
-    // run every frame
-    scene.registerBeforeRender(function () {
-        if (cameraControl) {
-            return;
-        }
-        focusedMesh.rotate(Vector3.UpReadOnly, inertialAlpha, Space.LOCAL);
-        focusedMesh.rotate(Vector3.Left(), inertialBeta, Space.WORLD);
-
-        inertialAlpha *= inertia;
-        inertialBeta *= inertia;
-    });
-
+const controls = ({ acceptInput, updateWeaponState, updateWeaponsPosition }) => {
     // GUI
     var guiLayer = AdvancedDynamicTexture.CreateFullscreenUI("guiLayer");
     var guiContainer = new Grid("uiGrid");

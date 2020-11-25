@@ -28,6 +28,7 @@ const BaseScene = (props) => {
     // Resize the babylon engine when the window is resized
     window.addEventListener('resize', onResizeWindow);
     return () => {
+      scene.getEngine().dispose();
       window.removeEventListener('resize', onResizeWindow);
     }
   }, []);
