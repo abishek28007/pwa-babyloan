@@ -8,8 +8,9 @@ import {
 const buttons = [{
     name: "left",
     width: "55px",
-    column: 1,
+    column: 0,
     imageUrl: "https://models.babylonjs.com/Demos/weaponsDemo/textures/leftButton.png",
+    verticalAlignment: Control.VERTICAL_ALIGNMENT_BOTTOM,
     onPointerClickObservable: (acceptInput, updateWeaponState, updateWeaponsPosition) => {
         if (acceptInput) {
             updateWeaponsPosition("left");
@@ -18,7 +19,7 @@ const buttons = [{
 }, {
     name: "activate",
     width: "130px",
-    column: 2,
+    column: 1,
     imageUrl: "https://models.babylonjs.com/Demos/weaponsDemo/textures/activateButton.png",
     verticalAlignment: Control.VERTICAL_ALIGNMENT_BOTTOM,
     onPointerClickObservable: (acceptInput, updateWeaponState) => {
@@ -29,8 +30,9 @@ const buttons = [{
 }, {
     name: "right",
     width: "55px",
-    column: 3,
+    column: 2,
     imageUrl: "https://models.babylonjs.com/Demos/weaponsDemo/textures/rightButton.png",
+    verticalAlignment: Control.VERTICAL_ALIGNMENT_BOTTOM,
     onPointerClickObservable: (acceptInput, updateWeaponState, updateWeaponsPosition) => {
         if (acceptInput) {
             updateWeaponsPosition("right");
@@ -44,11 +46,9 @@ const controls = ({ acceptInput, updateWeaponState, updateWeaponsPosition }) => 
     var guiLayer = AdvancedDynamicTexture.CreateFullscreenUI("guiLayer");
     var guiContainer = new Grid("uiGrid");
     guiContainer.addRowDefinition(1, false);
-    guiContainer.addColumnDefinition(1 / 5, false);
-    guiContainer.addColumnDefinition(1 / 5, false);
-    guiContainer.addColumnDefinition(1 / 5, false);
-    guiContainer.addColumnDefinition(1 / 5, false);
-    guiContainer.addColumnDefinition(1 / 5, false);
+    guiContainer.addColumnDefinition(1 / 3, false);
+    guiContainer.addColumnDefinition(1 / 3, false);
+    guiContainer.addColumnDefinition(1 / 3, false);
     guiContainer.paddingTop = "50px";
     guiContainer.paddingLeft = "50px";
     guiContainer.paddingRight = "50px";

@@ -20,9 +20,9 @@ function weaponAxe(scene, gl, weaponsParent, noiseTexture) {
     var axeMat = new NodeMaterial("axeMat", scene, { emitComments: false });
     var axeIceMat = new NodeMaterial("axeIceMat", scene, { emitComments: false });
     // load assets 
-    promises.push(SceneLoader.AppendAsync("https://models.babylonjs.com/Demos/weaponsDemo/meshes/frostAxe.glb"));
-    promises.push(axeMat.loadAsync("https://models.babylonjs.com/Demos/weaponsDemo/shaders/axeMat.json"));
-    promises.push(axeIceMat.loadAsync("https://models.babylonjs.com/Demos/weaponsDemo/shaders/axeIceMat.json"));
+    promises.push(SceneLoader.AppendAsync("/public/assets/meshes/frostAxe.glb"));
+    promises.push(axeMat.loadAsync("/public/assets/shaders/axeMat.json"));
+    promises.push(axeIceMat.loadAsync("/public/assets/shaders/axeIceMat.json"));
     return Promise
         .all(promises)
         .then(() => {

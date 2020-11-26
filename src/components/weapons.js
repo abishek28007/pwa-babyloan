@@ -223,12 +223,12 @@ const Weapons = (props) => {
             const daggerGlossTex = new Texture("/public/assets/textures/moltenDagger_gloss.png", scene, false, false);
             const daggerEmissiveTex = new Texture("/public/assets/textures/moltenDagger_emissive.png", scene, false, false);
             const daggerMaskTex = new Texture("/public/assets/textures/moltenDagger_mask.png", scene, false, false);
-            const swordDiffuseTex = new Texture("/public/assets/textures/runeSword_diffuse.png", scene, false, false);
+            const swordDiffuseTex = new Texture("/public/assets/textures/runeSword_diffuse-min.png", scene, false, false);
             const swordSpecularTex = new Texture("/public/assets/textures/runeSword_specular.png", scene, false, false);
             const swordGlossTex = new Texture("/public/assets/textures/runeSword_gloss.png", scene, false, false);
             const swordEmissiveTex = new Texture("/public/assets/textures/runeSword_emissive.png", scene, false, false);
             const swordHandleGemNormalTex = new Texture("/public/assets/textures/swordHandleGem_normal.png", scene, false, false);
-            const swordHandleGemPositionTex = new Texture("/public/assets/textures/swordHandleGem_position.png", scene, false, false);
+            const swordHandleGemPositionTex = new Texture("/public/assets/textures/swordHandleGem_position-min.png", scene, false, false);
             const axeDiffuseTex = new Texture("/public/assets/textures/frostAxe_diffuse.png", scene, false, false);
             const axeSpecularTex = new Texture("/public/assets/textures/frostAxe_specular.png", scene, false, false);
             const axeGlossTex = new Texture("/public/assets/textures/frostAxe_gloss.png", scene, false, false);

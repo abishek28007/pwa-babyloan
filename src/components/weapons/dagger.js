@@ -19,10 +19,10 @@ function weaponDagger(scene, gl, weaponsParent, noiseTexture) {
     var daggerGemMat = new NodeMaterial("daggerGemMat", scene, { emitComments: false });
     var daggerBladeMat = new NodeMaterial("daggerBladeMat", scene, { emitComments: false });
     // load assets 
-    promises.push(SceneLoader.AppendAsync("https://models.babylonjs.com/Demos/weaponsDemo/meshes/moltenDagger.glb"));
-    promises.push(daggerHandleMat.loadAsync("https://models.babylonjs.com/Demos/weaponsDemo/shaders/daggerHandleMat.json"));
-    promises.push(daggerBladeMat.loadAsync("https://models.babylonjs.com/Demos/weaponsDemo/shaders/daggerBladeMat.json"));
-    promises.push(daggerGemMat.loadAsync("https://models.babylonjs.com/Demos/weaponsDemo/shaders/daggerGemMat.json"));
+    promises.push(SceneLoader.AppendAsync("/public/assets/meshes/moltenDagger.glb"));
+    promises.push(daggerHandleMat.loadAsync("/public/assets/shaders/daggerHandleMat.json"));
+    promises.push(daggerBladeMat.loadAsync("/public/assets/shaders/daggerBladeMat.json"));
+    promises.push(daggerGemMat.loadAsync("/public/assets/shaders/daggerGemMat.json"));
     return Promise
         .all(promises)
         .then(() => {

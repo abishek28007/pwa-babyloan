@@ -22,11 +22,11 @@ function weaponSword(scene, gl, weaponsParent) {
     var swordGuardGemsMat = new NodeMaterial("swordGuardGemsMat", scene, { emitComments: false });
     var swordBladeMat = new NodeMaterial("swordBladeMat", scene, { emitComments: false });
     // load assets 
-    promises.push(SceneLoader.AppendAsync("https://models.babylonjs.com/Demos/weaponsDemo/meshes/runeSword.glb"));
-    promises.push(swordBladeMat.loadAsync("https://models.babylonjs.com/Demos/weaponsDemo/shaders/swordBladeMat.json"));
-    promises.push(swordGuardGemsMat.loadAsync("https://models.babylonjs.com/Demos/weaponsDemo/shaders/swordGuardGemsMat.json"));
-    promises.push(swordHandleGemMat.loadAsync("https://models.babylonjs.com/Demos/weaponsDemo/shaders/swordHandleGemMat.json"));
-    promises.push(swordHiltMat.loadAsync("https://models.babylonjs.com/Demos/weaponsDemo/shaders/swordHiltMat.json"));
+    promises.push(SceneLoader.AppendAsync("/public/assets/meshes/runeSword.glb"));
+    promises.push(swordBladeMat.loadAsync("/public/assets/shaders/swordBladeMat.json"));
+    promises.push(swordGuardGemsMat.loadAsync("/public/assets/shaders/swordGuardGemsMat.json"));
+    promises.push(swordHandleGemMat.loadAsync("/public/assets/shaders/swordHandleGemMat.json"));
+    promises.push(swordHiltMat.loadAsync("/public/assets/shaders/swordHiltMat.json"));
     return Promise
         .all(promises)
         .then(() => {
@@ -51,12 +51,12 @@ function weaponSword(scene, gl, weaponsParent) {
             swordHiltMat.build(false);
             swordHilt.material = swordHiltMat;
             // textures
-            const swordDiffuseTex = new Texture("/public/assets/textures/runeSword_diffuse.png", scene, false, false);
+            const swordDiffuseTex = new Texture("/public/assets/textures/runeSword_diffuse-min.png", scene, false, false);
             const swordSpecularTex = new Texture("/public/assets/textures/runeSword_specular.png", scene, false, false);
             const swordGlossTex = new Texture("/public/assets/textures/runeSword_gloss.png", scene, false, false);
             const swordEmissiveTex = new Texture("/public/assets/textures/runeSword_emissive.png", scene, false, false);
             const swordHandleGemNormalTex = new Texture("/public/assets/textures/swordHandleGem_normal.png", scene, false, false);
-            const swordHandleGemPositionTex = new Texture("/public/assets/textures/swordHandleGem_position.png", scene, false, false);
+            const swordHandleGemPositionTex = new Texture("/public/assets/textures/swordHandleGem_position-min.png", scene, false, false);
             // get shader parameters
             var swordBladeDiffuse = swordBladeMat.getBlockByName("diffuseTexture");
             var swordBladeSpecular = swordBladeMat.getBlockByName("specularTexture");
