@@ -1,9 +1,7 @@
-import {
-    Grid,
-    Button,
-    Control,
-    AdvancedDynamicTexture 
-} from '@babylonjs/gui/2D';
+import { AdvancedDynamicTexture } from '@babylonjs/gui/2D/advancedDynamicTexture';
+import { Grid } from '@babylonjs/gui/2D/controls/grid';
+import { Button } from '@babylonjs/gui/2D/controls/button';
+import { Control } from '@babylonjs/gui/2D/controls/control';
 
 const buttons = [{
     name: "left",

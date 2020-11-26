@@ -55,7 +55,7 @@ function weaponSword(scene, gl, weaponsParent) {
             const swordSpecularTex = new Texture("/public/assets/textures/runeSword_specular.png", scene, false, false);
             const swordGlossTex = new Texture("/public/assets/textures/runeSword_gloss.png", scene, false, false);
             const swordEmissiveTex = new Texture("/public/assets/textures/runeSword_emissive.png", scene, false, false);
-            const swordHandleGemNormalTex = new Texture("/public/assets/textures/swordHandleGem_normal.png", scene, false, false);
+            const swordHandleGemNormalTex = new Texture("/public/assets/textures/swordHandleGem_normal-min.png", scene, false, false);
             const swordHandleGemPositionTex = new Texture("/public/assets/textures/swordHandleGem_position-min.png", scene, false, false);
             // get shader parameters
             var swordBladeDiffuse = swordBladeMat.getBlockByName("diffuseTexture");
