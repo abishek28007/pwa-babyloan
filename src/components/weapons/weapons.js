@@ -1,5 +1,5 @@
 import React from 'react';
-import '@babylonjs/loaders/glTF';
+import '@babylonjs/loaders/glTF/2.0/glTFLoader';
 // import '@babylonjs/inspector';
 // import "@babylonjs/core/Debug/debugLayer"; 
 
@@ -9,7 +9,8 @@ import {
     Vector3
 } from '@babylonjs/core/Maths/math';
 import { InterpolateValueAction, StateCondition, CombineAction, SetValueAction, DoNothingAction, SetStateAction } from '@babylonjs/core/Actions';
-import { Mesh, StandardMaterial } from '@babylonjs/core';
+import { Mesh } from '@babylonjs/core/Meshes/mesh';
+import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { PointLight } from '@babylonjs/core/Lights'
 import { Tools } from '@babylonjs/core/misc/tools';
 import { SineEase } from '@babylonjs/core/Animations/easing';
@@ -30,7 +31,7 @@ import BabylonScene from '../SceneComponent';
 import { toAxe, weaponAxe, activateAxeMagic } from './axe';
 import { toSword, weaponSword, activateSwordMagic }  from './sword';
 import { toDagger, weaponDagger, activateDaggerMagic, } from './dagger';
-import controls from './Controls';
+// import controls from './Controls';
 
 // for each easing function, you can choose between EASEIN (default), EASEOUT, EASEINOUT
 var easingFunction = new SineEase();
