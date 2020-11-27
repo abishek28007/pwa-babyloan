@@ -1,17 +1,25 @@
 import React from 'react';
+// import "@babylonjs/core/Meshes/meshBuilder";
 import '@babylonjs/loaders/glTF/2.0/glTFLoader';
 // import '@babylonjs/inspector';
 // import "@babylonjs/core/Debug/debugLayer"; 
 
-import { 
-    Space,
-    Color3,
-    Vector3
-} from '@babylonjs/core/Maths/math';
-import { InterpolateValueAction, StateCondition, CombineAction, SetValueAction, DoNothingAction, SetStateAction } from '@babylonjs/core/Actions';
+import "@babylonjs/core/Animations/animationGroup";
+import "@babylonjs/core/Behaviors/Meshes/pointerDragBehavior";
+import { Color3 } from '@babylonjs/core/Maths/math.color';
+import { Space } from '@babylonjs/core/Maths/math.axis';
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
+import { InterpolateValueAction} from '@babylonjs/core/Actions/interpolateValueAction';
+import { StateCondition } from '@babylonjs/core/Actions/condition';
+import {
+    CombineAction,
+    SetValueAction,
+    DoNothingAction,
+    SetStateAction
+} from '@babylonjs/core/Actions/directActions';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
-import { PointLight } from '@babylonjs/core/Lights'
+import { PointLight } from '@babylonjs/core/Lights/pointLight';
 import { Tools } from '@babylonjs/core/misc/tools';
 import { SineEase } from '@babylonjs/core/Animations/easing';
 import { GlowLayer } from '@babylonjs/core/Layers/glowLayer';
@@ -127,6 +135,11 @@ const Weapons = (props) => {
             // scene position meshes
             var weaponsParent = new AbstractMesh("weaponsParent", scene);
             weaponsParent.position = new Vector3(0, 0, 0);
+            weaponsParent.actionManager = new ActionManager(scene);
+            weaponsParent.actionManager.registerAction(
+                new ExecuteCodeAction(ActionManager.OnPickTrigger, function () {
+                    console.log('jahan chaha wahan raha');
+                }));
             var activeWeapon = "dagger";
             var gl = new GlowLayer("glow", scene, {
                 mainTextureFixedSize: 1024,
