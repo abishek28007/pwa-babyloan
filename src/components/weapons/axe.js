@@ -1,8 +1,7 @@
-import {
-    Color4,
-    Vector3
-} from '@babylonjs/core/Maths/math';
-import { SceneLoader } from '@babylonjs/core/Loading';
+import '@babylonjs/core/Loading/loadingScreen';
+import { Color4 } from '@babylonjs/core/Maths/math.color';
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
+import { SceneLoader } from '@babylonjs/core/Loading/sceneLoader';
 import { NodeMaterial } from '@babylonjs/core/Materials/Node';
 import { Texture } from '@babylonjs/core/Materials/Textures/texture';
 import { ParticleSystem } from '@babylonjs/core/Particles/particleSystem';
