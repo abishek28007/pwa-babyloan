@@ -10,6 +10,7 @@
     },
     {
       "src": "./public/logo192.png",
+      "purpose":"maskable",
       "type": "image/png",
       "sizes": "192x192"
     },
